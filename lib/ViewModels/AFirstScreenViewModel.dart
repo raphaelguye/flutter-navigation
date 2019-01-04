@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class AFirstScreenViewModel {
-  void buttonClicked();
+  void buttonClicked(BuildContext context);
 }

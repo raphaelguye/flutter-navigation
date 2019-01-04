@@ -25,13 +25,9 @@ class FirstScreenState extends State<FirstScreen> {
         ),
         body: Center(
           child: RaisedButton(
-            child: Text('Launch screen'),
+            child: Text('Go to second screen'),
             onPressed: () {
-              viewModel.buttonClicked();
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => SecondScreen()),
-              // );
+              viewModel.buttonClicked(context);
             },
           ),
         ),

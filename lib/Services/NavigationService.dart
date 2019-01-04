@@ -5,17 +5,19 @@ import '../Views/SecondScreen.dart';
 
 class NavigationService implements ANavigationService {
 
-  Navigator navigator;
-
-  NavigationService(Navigator navigator) {
-    this.navigator = navigator;
-  }
-
-  void navigate(PageToken pageToken) {
+  void navigate(PageToken pageToken, BuildContext context) {
     switch(pageToken) {
       case PageToken.FirstScreen:
+      Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FirstScreen()),
+                );
       break;
       case PageToken.SecondScreen:
+      Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondScreen()),
+                );
       break;
     }
   }
