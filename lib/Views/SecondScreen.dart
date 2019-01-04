@@ -8,14 +8,16 @@ class SecondScreen extends StatefulWidget {
 }
 
 class SecondScreenState extends State<SecondScreen> {
-
   ASecondScreenViewModel viewModel;
+  TextEditingController controller;
 
   @override
-    void initState() {
-      super.initState();
-      viewModel = IoCManager.ioc.get<ASecondScreenViewModel>();
-    }
+  void initState() {
+    super.initState();
+    viewModel = IoCManager.ioc.get<ASecondScreenViewModel>();
+    controller = TextEditingController();
+    controller.addListener(() => viewModel.nameTextController.add(controller.text));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +31,38 @@ class SecondScreenState extends State<SecondScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text('Enter your name'),
-            TextField(
-              onChanged: (text) => viewModel.name = text,
-            ),
-            RaisedButton(
-              child: Text('Submit'),
-              onPressed: () {
-                // This call could be moved in the ViewModel who could use a DialogService...
-                showDialog(
-                    context: context,
-                    builder: (_) => new AlertDialog(
-                          title: new Text('Hello'),
-                          content: new Text('Hello ${viewModel.name}'),
-                        ));
-              },
-            )
-          ],
+          children: getWidgets(),
         ),
       ),
     );
+  }
+
+  List<Widget> getWidgets() {
+    return <Widget>[
+      Text('Enter your name'),
+      TextField(
+        onChanged: (text) => viewModel.name = text, // TODO: We should not use the viewModelText and the controller...
+        controller: controller,
+      ),
+      StreamBuilder(
+          stream: viewModel.isSubmitButtonEnabled,
+          builder: (context, snapshot) {
+            return RaisedButton(
+                child: Text('Submit'),
+                onPressed: (snapshot.data ?? false) ? () => saysHello() : null);
+          }),
+    ];
+  }
+
+  void saysHello() {
+    viewModel.submitButtonExecute();
+
+    //the call of showDialog could be done from the ViewModel by calling a dedicated DialogService, for example...
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text('Hello'),
+              content: new Text('Hello ${viewModel.name}'),
+            ));
   }
 }
