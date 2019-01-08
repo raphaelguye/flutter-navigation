@@ -1,28 +1,34 @@
-import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:rx_command/rx_command.dart';
 import 'ASecondScreenViewModel.dart';
 import '../Services/ANavigationService.dart';
 
 class SecondScreenViewModel implements ASecondScreenViewModel {
   ANavigationService navigationService;
   var name;
-  var _nameTextController = StreamController<String>.broadcast();
+  RxCommand<BuildContext, void> submitCommand;
+  RxCommand<String, bool> updateNameCommand;
 
   SecondScreenViewModel(ANavigationService navigationService) {
     this.navigationService = navigationService;
+
+    updateNameCommand =
+        RxCommand.createSync<String, bool>((s) => updateNameCommandExecute(s));
+
+    submitCommand = RxCommand.createSync<BuildContext, void>(
+        (context) => submitCommandExecute(context),
+        canExecute: updateNameCommand);
+
+    updateNameCommand.execute("");
   }
 
-  @override
-  Sink get nameTextController => _nameTextController;
-
-  @override
-  Stream<bool> get isSubmitButtonEnabled =>
-      _nameTextController.stream.map((name) => name.length > 3);
-
-  @override
-  void submitButtonExecute() {
+  void submitCommandExecute(BuildContext context) {
+    print("Command executed");
     print('From ViewModel: Hello $name');
   }
 
-  @override
-  void dispose() => _nameTextController.close();
+  bool updateNameCommandExecute(String name) {
+    this.name = name;
+    return name.length > 4;
+  }
 }

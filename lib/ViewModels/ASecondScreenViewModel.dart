@@ -1,11 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:rx_command/rx_command.dart';
 
 abstract class ASecondScreenViewModel {
-  //TODO: Is it possible to deal only with the nameTextController??
   var name;
-  Sink get nameTextController;
-  
-  Stream<bool> get isSubmitButtonEnabled;
-  void submitButtonExecute();
-
-  void dispose();
+  RxCommand<BuildContext, void> submitCommand;
+  RxCommand<String, bool> updateNameCommand;
 }

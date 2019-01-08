@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rx_widgets/rx_widgets.dart';
 import '../ViewModels/ASecondScreenViewModel.dart';
 import '../IoCManager.dart';
 
@@ -9,14 +10,11 @@ class SecondScreen extends StatefulWidget {
 
 class SecondScreenState extends State<SecondScreen> {
   ASecondScreenViewModel viewModel;
-  TextEditingController controller;
 
   @override
   void initState() {
     super.initState();
     viewModel = IoCManager.ioc.get<ASecondScreenViewModel>();
-    controller = TextEditingController();
-    controller.addListener(() => viewModel.nameTextController.add(controller.text));
   }
 
   @override
@@ -41,22 +39,16 @@ class SecondScreenState extends State<SecondScreen> {
     return <Widget>[
       Text('Enter your name'),
       TextField(
-        onChanged: (text) => viewModel.name = text, // TODO: We should not use the viewModelText and the controller...
-        controller: controller,
+        onChanged: (text) => viewModel.updateNameCommand.execute(text),
       ),
-      StreamBuilder(
-          stream: viewModel.isSubmitButtonEnabled,
-          builder: (context, snapshot) {
-            return RaisedButton(
-                child: Text('Submit'),
-                onPressed: (snapshot.data ?? false) ? () => saysHello() : null);
-          }),
+      RxRaisedButton(
+        rxCommand: viewModel.submitCommand,
+        child: Text("Rx"),
+      ),
     ];
   }
 
   void saysHello() {
-    viewModel.submitButtonExecute();
-
     //the call of showDialog could be done from the ViewModel by calling a dedicated DialogService, for example...
     showDialog(
         context: context,
