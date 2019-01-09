@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rx_command/rx_command.dart';
+import 'dart:async';
 import 'ASecondScreenViewModel.dart';
 import '../Services/ANavigationService.dart';
 
@@ -8,10 +9,14 @@ class SecondScreenViewModel implements ASecondScreenViewModel {
   var name;
   RxCommand<BuildContext, void> submitCommand;
   RxCommand<String, bool> updateNameCommand;
+  Stream<String> get resultStream => resultStreamController.stream;
   BuildContext currentContext;
+  StreamController<String> resultStreamController;
 
   SecondScreenViewModel(ANavigationService navigationService) {
     this.navigationService = navigationService;
+
+    resultStreamController = StreamController<String>();
 
     updateNameCommand =
         RxCommand.createSync<String, bool>((s) => updateNameCommandExecute(s));
@@ -20,7 +25,7 @@ class SecondScreenViewModel implements ASecondScreenViewModel {
         (context) => submitCommandExecute(context),
         canExecute: updateNameCommand);
 
-    updateNameCommand.execute("");
+    updateNameCommand.execute('');
   }
 
   ASecondScreenViewModel of(BuildContext context) {
@@ -47,6 +52,17 @@ class SecondScreenViewModel implements ASecondScreenViewModel {
 
   bool updateNameCommandExecute(String name) {
     this.name = name;
-    return name.length > 4;
+
+    if (name.length > 4) {
+      resultStreamController.add('');
+      return true;
+    } else {
+      if (name == null || name.length == 0) {
+        resultStreamController.add('');
+      } else {
+        resultStreamController.add('the name is too short (${name.length})');
+      }
+      return false;
+    }
   }
 }

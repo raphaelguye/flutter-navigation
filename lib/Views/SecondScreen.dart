@@ -45,6 +45,7 @@ class SecondScreenState extends State<SecondScreen> {
         rxCommand: viewModel.of(context).submitCommand,
         child: Text("Submit"),
       ),
+      RxText(viewModel.resultStream),
     ];
   }
 }

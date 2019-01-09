@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rx_command/rx_command.dart';
 
 abstract class ASecondScreenViewModel {
+  ASecondScreenViewModel of(BuildContext context);
+
   var name;
+
   RxCommand<BuildContext, void> submitCommand;
   RxCommand<String, bool> updateNameCommand;
-  ASecondScreenViewModel of(BuildContext context);
+  Stream<String> get resultStream;
 }
