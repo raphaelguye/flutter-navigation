@@ -42,19 +42,9 @@ class SecondScreenState extends State<SecondScreen> {
         onChanged: (text) => viewModel.updateNameCommand.execute(text),
       ),
       RxRaisedButton(
-        rxCommand: viewModel.submitCommand,
-        child: Text("Rx"),
+        rxCommand: viewModel.of(context).submitCommand,
+        child: Text("Submit"),
       ),
     ];
-  }
-
-  void saysHello() {
-    //the call of showDialog could be done from the ViewModel by calling a dedicated DialogService, for example...
-    showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: new Text('Hello'),
-              content: new Text('Hello ${viewModel.name}'),
-            ));
   }
 }

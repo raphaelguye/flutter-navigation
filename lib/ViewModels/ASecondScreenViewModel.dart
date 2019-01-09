@@ -5,4 +5,5 @@ abstract class ASecondScreenViewModel {
   var name;
   RxCommand<BuildContext, void> submitCommand;
   RxCommand<String, bool> updateNameCommand;
+  ASecondScreenViewModel of(BuildContext context);
 }
