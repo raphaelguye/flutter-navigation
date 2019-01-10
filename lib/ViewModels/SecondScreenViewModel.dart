@@ -28,9 +28,15 @@ class SecondScreenViewModel implements ASecondScreenViewModel {
     updateNameCommand.execute('');
   }
 
+  @override
   ASecondScreenViewModel of(BuildContext context) {
     currentContext = context;
     return this;
+  }
+
+  @override
+  void dispose() {
+    resultStreamController.close();
   }
 
   void submitCommandExecute(BuildContext context) {
@@ -44,7 +50,7 @@ class SecondScreenViewModel implements ASecondScreenViewModel {
             context: contextToBeUsed,
             builder: (_) => new AlertDialog(
                   title: new Text('Hello'),
-                  content: new Text('Hello ${name}'),
+                  content: new Text('Hello $name'),
                 ))
         .whenComplete(() => print('showDialog success'))
         .catchError(() => print('showDialog error'));

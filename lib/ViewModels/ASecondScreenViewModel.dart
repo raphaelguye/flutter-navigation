@@ -3,6 +3,7 @@ import 'package:rx_command/rx_command.dart';
 
 abstract class ASecondScreenViewModel {
   ASecondScreenViewModel of(BuildContext context);
+  void dispose();
 
   var name;
 

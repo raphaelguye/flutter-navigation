@@ -13,8 +13,14 @@ class SecondScreenState extends State<SecondScreen> {
 
   @override
   void initState() {
-    super.initState();
     viewModel = IoCManager.ioc.get<ASecondScreenViewModel>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
   }
 
   @override
