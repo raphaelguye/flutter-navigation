@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum PageToken {
-  FirstScreen, SecondScreen
+  FirstScreen, SecondScreen, ListViewScreen,
 }
 
 abstract class ANavigationService {

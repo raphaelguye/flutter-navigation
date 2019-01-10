@@ -5,19 +5,18 @@ import 'ViewModels/AFirstScreenViewModel.dart';
 import 'ViewModels/FirstScreenViewModel.dart';
 import 'ViewModels/ASecondScreenViewModel.dart';
 import 'ViewModels/SecondScreenViewModel.dart';
+import 'ViewModels/AListViewScreenViewModel.dart';
+import 'ViewModels/ListViewScreenViewModel.dart';
 
 class IoCManager {
-
   static GetIt ioc = GetIt();
 
   static void setup() {
-
     registerServices();
-    
+
     ANavigationService navigationService = ioc.get<ANavigationService>();
 
     registerViewModels(navigationService);
-    
   }
 
   static void registerServices() {
@@ -25,8 +24,11 @@ class IoCManager {
   }
 
   static void registerViewModels(ANavigationService navigationService) {
-    ioc.registerSingleton<AFirstScreenViewModel>(new FirstScreenViewModel(navigationService));
-    ioc.registerSingleton<ASecondScreenViewModel>(new SecondScreenViewModel(navigationService));
+    ioc.registerSingleton<AFirstScreenViewModel>(
+        new FirstScreenViewModel(navigationService));
+    ioc.registerSingleton<ASecondScreenViewModel>(
+        new SecondScreenViewModel(navigationService));
+    ioc.registerSingleton<AListViewScreenViewModel>(
+        new ListViewScreenViewModel(navigationService));
   }
-
 }
